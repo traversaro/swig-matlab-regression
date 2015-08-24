@@ -26,7 +26,6 @@ double B::getValue() const
 
 A::A()
 {
-    value = 0.0;
 }
 
 A::~A()

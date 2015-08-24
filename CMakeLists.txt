@@ -8,22 +8,22 @@ include(UseSWIG)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 
+add_library(refToInternalObjectLib SHARED refToInternalObject.cpp)
+
 # Find MATLAB
 find_package(Matlab
              REQUIRED
              MX_LIBRARY
              MAIN_PROGRAM)
 
-message("Status : " ${Matlab_INCLUDE_DIRS})
 include_directories(${Matlab_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR})
 
-set(modulename iDynTreeMATLAB_wrap)
-
 set_source_files_properties(refToInternalObject.i PROPERTIES CPLUSPLUS ON)
-swig_add_module(refToInternalObject matlab refToInternalObject.i)
+swig_add_module(refToInternalObjectMATLAB_wrap matlab refToInternalObject.i)
+target_link_libraries(refToInternalObjectMATLAB_wrap refToInternalObjectLib)
 
-set_target_properties(refToInternalObject PROPERTIES PREFIX "" SUFFIX .${Matlab_MEX_EXTENSION})
+set_target_properties(refToInternalObjectMATLAB_wrap PROPERTIES PREFIX "" SUFFIX .${Matlab_MEX_EXTENSION})
 
 #On new versions of Clang, MATLAB requires C++11.
 #I enable it on all Clangs
